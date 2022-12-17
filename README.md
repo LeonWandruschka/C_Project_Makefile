@@ -58,7 +58,7 @@ All created .o files will be deleted.
 ### make run
 
 The ```make run``` command builds the current project and executes it.
-All created .o files will be deleted.
+All created .o files will be deleted. \
 (To option to give Arguments to the program is not implemented yet.)
 
 ### make debug
@@ -82,11 +82,11 @@ The ```make create-folders``` command creates the needed folders ```src```,```in
 
 ### make valgrind
 
-The ```make valgrind``` builds the project and uses valgrind to search for possible memory errors / leaks.
-(Please check [Pre requirements](Pre requirements))
+The ```make valgrind``` builds the project and uses valgrind to search for possible memory errors / leaks. \
+(Please check [Pre requirements](#prior-requirements))
 
 ### make doxygen
 
-The ```make doxygen``` command creates a new doxygen documentation.
+The ```make doxygen``` command creates a new doxygen documentation. \
 (Please check [Pre requirements](#prior-requirements))
 
