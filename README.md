@@ -11,6 +11,7 @@ The ```executable``` file is placed in the ```build``` folder.
 
 To create the folders you can simply call ```make create-folders```
 
+```
 .
 ├── src
 │   └──  main.c
@@ -21,7 +22,7 @@ To create the folders you can simply call ```make create-folders```
 │   └──  bar.h
 ├── build
 │   └──  executable
-
+```
 
 Commands:
 - make build
@@ -87,5 +88,5 @@ The ```make valgrind``` builds the project and uses valgrind to search for possi
 ### make doxygen
 
 The ```make doxygen``` command creates a new doxygen documentation.
-(Please check [Pre requirements](Pre requirements))
+(Please check [Pre requirements](#prior-requirements))
 
