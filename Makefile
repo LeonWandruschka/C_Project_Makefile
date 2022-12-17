@@ -57,6 +57,7 @@ build: $(C_OBJECTS)
 	$(C_COMPILER_CALL) $^ -o $(BUILD_DIR)/$(EXECUTABLE_NAME)
 	$(RM_OF)
 
+#<-- RUN -->#
 run: $(C_OBJECTS)
 	$(C_COMPILER_CALL) $^ -o $(BUILD_DIR)/$(EXECUTABLE_NAME)
 	$(RM_OF)
@@ -65,13 +66,14 @@ run: $(C_OBJECTS)
 	./$(BUILD_DIR)/$(EXECUTABLE_NAME) 
 	@echo "\n\n"Exit with: $$?
 
+#<-- DEBUG -->
 debug: $(C_OBJECTS)
 	$(C_COMPILER) -g -O0 -Wall -Wextra -Wpedantic -Wconversion -std=c17 $^ -o $(BUILD_DIR)/$(EXECUTABLE_NAME)
 	@echo
 	@echo Debugging program with $(C_DEBUGGER)...
 	$(C_DEBUGGER) ./$(BUILD_DIR)/$(EXECUTABLE_NAME) 
 
-
+#<-- DEBUG -->
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(C_COMPILER_CALL) -I $(INCLUDE_DIR) -c $< -o $@
 
