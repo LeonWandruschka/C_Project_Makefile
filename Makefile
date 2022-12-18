@@ -17,6 +17,7 @@ REMOVE_OBJ_FILES = 1
 INCLUDE_DIR = include
 BUILD_DIR = build
 SRC_DIR = src
+BUILD_DIR_DEBUG = build
 
 #<-- SET COMPILERFLAGS -->#
 ifeq ($(DEBUG), 1)
@@ -51,6 +52,7 @@ C_COMPILER_CALL = $(C_COMPILER) $(C_COMPILER_FLAGS)
 
 C_SRCS = $(wildcard $(SRC_DIR)/*.c)
 C_OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(C_SRCS))
+C_OBJECTS_DEBUG = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR_DEBUG)/%.o, $(C_SRCS))
 
 #<-- BUILD -->#
 build: $(C_OBJECTS) 
@@ -67,15 +69,26 @@ run: $(C_OBJECTS)
 	@echo "\n\n"Exit with: $$?
 
 #<-- DEBUG -->
-debug: $(C_OBJECTS)
-	$(C_COMPILER) -g -O0 -Wall -Wextra -Wpedantic -Wconversion -std=c17 $^ -o $(BUILD_DIR)/$(EXECUTABLE_NAME)
+debug: $(C_OBJECTS_DEBUG)
+	$(C_COMPILER) -g -O0 -Wall -Wextra -Wpedantic -Wconversion -std=c17 $^ -o $(BUILD_DIR_DEBUG)/mainDebug
 	@echo
 	@echo Debugging program with $(C_DEBUGGER)...
-	$(C_DEBUGGER) ./$(BUILD_DIR)/$(EXECUTABLE_NAME) 
+	$(C_DEBUGGER) ./$(BUILD_DIR_DEBUG)/mainDebug
 
-#<-- DEBUG -->
+#<-- VALGRIND (LINUX USERS) -->#
+valgrind: $(C_OBJECTS_DEBUG)
+	$(C_COMPILER) -g -O0 -Wall -Wextra -Wpedantic -Wconversion -std=c17 $^ -o $(BUILD_DIR_DEBUG)/mainDebug
+	@echo
+	@echo Build program and call with valgrind...
+	valgrind -s ./$(BUILD_DIR_DEBUG)/mainDebug
+
+
+#<-- Normal -->#
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(C_COMPILER_CALL) -I $(INCLUDE_DIR) -c $< -o $@
+#<-- DEBUG -->#
+$(BUILD_DIR_DEBUG)/%.o: $(SRC_DIR)/%.c
+	$(C_COMPILER) -g -O0 -Wall -Wextra -Wpedantic -Wconversion -std=c17 -I $(INCLUDE_DIR) -c $< -o $@
 
 #<-- CLEAN -->#
 clean: 
@@ -90,10 +103,6 @@ create-folders:
 	mkdir src
 	mkdir build
 	mkdir include
-
-#<-- VALGRIND (LINUX USERS) -->#
-valgrind:
-	@echo VALGRIND
 
 #<-- CREATE DOXYGEN DOCUMENTATION -->#
 doxygen:
