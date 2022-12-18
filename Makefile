@@ -11,6 +11,7 @@
 DEBUG ?= 0
 DEBUGGER ?= 0
 COMPILER ?= 0
+LOG_FILE ?= 0
 REMOVE_OBJ_FILES = 1
 
 #<-- PATH TO DIRECTORIES -->#
@@ -76,12 +77,16 @@ debug: $(C_OBJECTS_DEBUG)
 	$(C_DEBUGGER) ./$(BUILD_DIR_DEBUG)/mainDebug
 
 #<-- VALGRIND (LINUX USERS) -->#
+
 valgrind: $(C_OBJECTS_DEBUG)
 	$(C_COMPILER) -g -O0 -Wall -Wextra -Wpedantic -Wconversion -std=c17 $^ -o $(BUILD_DIR_DEBUG)/mainDebug
 	@echo
 	@echo Build program and call with valgrind...
-	valgrind -s ./$(BUILD_DIR_DEBUG)/mainDebug
-
+	@if [ $(LOG_FILE) = 1 ]; then\
+		valgrind --leak-check=full --log-file=valgrind_log.log ./$(BUILD_DIR_DEBUG)/mainDebug;\
+	else \
+		valgrind --leak-check=full ./$(BUILD_DIR_DEBUG)/mainDebug;\
+	fi
 
 #<-- Normal -->#
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
